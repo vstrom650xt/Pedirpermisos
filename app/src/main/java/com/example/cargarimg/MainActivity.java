@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -41,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
         String[] permissions = {
                 Manifest.permission.CAMERA,
                 Manifest.permission.RECORD_AUDIO,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+           //     Manifest.permission.ACCESS_FINE_LOCATION,
+           //     Manifest.permission.READ_EXTERNAL_STORAGE,
+           //     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_MEDIA_IMAGES
         };
 
@@ -73,6 +74,24 @@ public class MainActivity extends AppCompatActivity {
 
         // En este punto, 'imagePaths' contiene las rutas de las imágenes en la galería
         // Puedes acceder a las rutas usando 'imagePaths.get(index)'
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            boolean allPermissionsGranted = true;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allPermissionsGranted = false;
+                    break;
+                }
+            }
+            if (allPermissionsGranted) {
+                Toast.makeText(this, "yeeeeee todo concedido+", Toast.LENGTH_SHORT).show();
+                loadImagesFromGallery();
+            }
+        }
     }
 }
 
